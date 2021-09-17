@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+    environment {
+      tag = '${BUILD_NUMBER}'
+    }
+    stages {
+        /*stage('create image') {
+            steps {
+               sh 'gcloud compute images create rahulprajapati-instance-3  --source-disk=rahulprajapati-instance-1  --source-disk-zone=asia-east1-b --project=searce-playground'
+            }
+        }
+        stage('create instance template') {
+            steps {
+                sh 'gcloud beta compute --project=searce-playground instance-templates create updated-mig-jenkins-1 --machine-type=e2-micro --subnet=projects/searce-playground/regions/asia-east1/subnetworks/rahulprajapati-subnet-1 --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=rahulprajapati-mig-pipeline-ac@searce-playground.iam.gserviceaccount.com --scopes=https://www.googleapis.com/auth/cloud-platform --region=asia-east1 --tags=http-server,https-server --image=rahulprajapati-instance-2 --image-project=searce-playground --boot-disk-size=10GB --boot-disk-type=pd-balanced --boot-disk-device-name=updated-mig-jenkins --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --reservation-affinity=any'
+            }
+        }*/
+        stage('Update MIG') {
+            steps {
+                sh 'gcloud compute instance-groups managed rolling-action start-update mig-rahul-jenkins-testing --version=template=updated-mig-jenkins-1 --type=proactive  --zone=asia-east1-b --project=searce-playground'
+            }
+        }
+    }
+}
